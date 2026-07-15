@@ -1,17 +1,22 @@
-// NOTE: `titile` is kept as-is (not renamed to `title`) to avoid breaking
-// any code that already references `.titile` on this class. If starting
-// fresh, prefer correcting the spelling everywhere at once.
+
+
 class ProjectDataModel {
   final String titile;
   final String subtitle;
   final String description;
   final List<String> tags;
+  final String? imagePath;
+  final String? githubUrl;
+  final String? liveUrl;
 
   const ProjectDataModel({
     required this.titile,
     required this.subtitle,
     required this.description,
     required this.tags,
+    this.imagePath,
+    this.githubUrl,
+    this.liveUrl,
   });
 }
 
@@ -28,13 +33,17 @@ const List<ProjectDataModel> projects = [
     description:
         'Developed an AI-powered desktop application that connects artisans with customers. The platform enables product management, secure authentication, order tracking, and inventory management using Firebase and JDBC.',
     tags: ['Java', 'JavaFX', 'Firebase', 'JDBC', 'Maven'],
+    imagePath: 'assets/artisans.png',
+    githubUrl: 'https://github.com/manasiniranjan06-crypto/Artisans_java',
   ),
   ProjectDataModel(
-    titile: 'Grocery Shopping App',
+    titile: 'Flutter App',
     subtitle: 'Flutter + Firebase',
     description:
         'Developed a modern grocery shopping application with Firebase backend, featuring user authentication, category browsing, cart management, and responsive UI.',
     tags: ['Flutter', 'Firebase'],
+    imagePath: 'assets/flutterApp.png',
+    githubUrl: 'https://github.com/manasiniranjan06-crypto/Flutter_Apps',
   ),
   ProjectDataModel(
     titile: 'Portfolio Website',
@@ -42,6 +51,8 @@ const List<ProjectDataModel> projects = [
     description:
         'Designed and developed a fully responsive personal portfolio website showcasing projects, skills, resume, and contact information with modern UI and smooth animations.',
     tags: ['Flutter Web'],
+    imagePath: 'assets/portfolio.png',
+    githubUrl: 'https://github.com/ManasiNiranjan/portfolio',
   ),
 ];
 

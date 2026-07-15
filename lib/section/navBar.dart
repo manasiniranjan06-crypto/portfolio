@@ -32,8 +32,7 @@ class PortfolioNavBar extends StatelessWidget {
 
     return Material(
       elevation: 3,
-      color: theme.appBarTheme.backgroundColor ??
-          theme.scaffoldBackgroundColor,
+      color: theme.appBarTheme.backgroundColor ?? theme.scaffoldBackgroundColor,
       child: SafeArea(
         bottom: false,
         child: Container(
@@ -42,8 +41,8 @@ class PortfolioNavBar extends StatelessWidget {
             horizontal: isMobile
                 ? 16
                 : isTablet
-                    ? 28
-                    : 50,
+                ? 28
+                : 50,
           ),
           child: Row(
             children: [
@@ -64,9 +63,7 @@ class PortfolioNavBar extends StatelessWidget {
                       ),
                       TextSpan(
                         text: "Niranjan",
-                        style: TextStyle(
-                          color: theme.colorScheme.primary,
-                        ),
+                        style: TextStyle(color: theme.colorScheme.primary),
                       ),
                     ],
                   ),
@@ -84,16 +81,11 @@ class PortfolioNavBar extends StatelessWidget {
 
               const SizedBox(width: 10),
 
-              _ThemeToggle(
-                onTap: onThemeToggle,
-              ),
+              _ThemeToggle(onTap: onThemeToggle),
 
               if (isMobile)
                 PopupMenuButton<String>(
-                  icon: Icon(
-                    Icons.menu_rounded,
-                    color: theme.iconTheme.color,
-                  ),
+                  icon: Icon(Icons.menu_rounded, color: theme.iconTheme.color),
                   color: theme.cardColor,
                   onSelected: onNavTap,
                   itemBuilder: (_) => sections
@@ -154,10 +146,7 @@ class _NavItemState extends State<_NavItem> {
         borderRadius: BorderRadius.circular(8),
         onTap: widget.onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 14,
-            vertical: 10,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -165,9 +154,7 @@ class _NavItemState extends State<_NavItem> {
                 duration: const Duration(milliseconds: 200),
                 style: TextStyle(
                   fontSize: 14,
-                  fontWeight: highlight
-                      ? FontWeight.w600
-                      : FontWeight.normal,
+                  fontWeight: highlight ? FontWeight.w600 : FontWeight.normal,
                   color: highlight
                       ? theme.colorScheme.primary
                       : theme.textTheme.bodyMedium?.color,
@@ -196,9 +183,7 @@ class _NavItemState extends State<_NavItem> {
 class _ThemeToggle extends StatefulWidget {
   final VoidCallback onTap;
 
-  const _ThemeToggle({
-    required this.onTap,
-  });
+  const _ThemeToggle({required this.onTap});
 
   @override
   State<_ThemeToggle> createState() => _ThemeToggleState();
@@ -211,8 +196,7 @@ class _ThemeToggleState extends State<_ThemeToggle> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final bool dark =
-        theme.brightness == Brightness.dark;
+    final bool dark = theme.brightness == Brightness.dark;
 
     return MouseRegion(
       onEnter: (_) => setState(() => hover = true),
@@ -236,16 +220,11 @@ class _ThemeToggleState extends State<_ThemeToggle> {
               transitionBuilder: (child, animation) {
                 return RotationTransition(
                   turns: animation,
-                  child: FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  ),
+                  child: FadeTransition(opacity: animation, child: child),
                 );
               },
               child: Icon(
-                dark
-                    ? Icons.dark_mode_rounded
-                    : Icons.light_mode_rounded,
+                dark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
                 key: ValueKey(dark),
                 size: 21,
                 color: theme.iconTheme.color,

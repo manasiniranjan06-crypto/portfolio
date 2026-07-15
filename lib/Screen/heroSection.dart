@@ -1,7 +1,13 @@
+
 import 'package:flutter/material.dart';
+import 'package:portfolio/model/launcher.dart';
+import 'package:portfolio/model/links.dart';
+
 
 class HeroSection extends StatelessWidget {
-  const HeroSection({super.key});
+  final ValueChanged<String> onNavTap;
+
+  const HeroSection({super.key, required this.onNavTap});
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +53,7 @@ class HeroSection extends StatelessWidget {
                   headingSize: headingSize,
                   titleSize: titleSize,
                   center: true,
+                  onNavTap: onNavTap,
                 ),
               ],
             )
@@ -59,6 +66,7 @@ class HeroSection extends StatelessWidget {
                     theme: theme,
                     headingSize: headingSize,
                     titleSize: titleSize,
+                    onNavTap: onNavTap,
                   ),
                 ),
                 const SizedBox(width: 0),
@@ -77,12 +85,14 @@ class HeroContent extends StatelessWidget {
   final double headingSize;
   final double titleSize;
   final bool center;
+  final ValueChanged<String> onNavTap;
 
   const HeroContent({
     super.key,
     required this.theme,
     required this.headingSize,
     required this.titleSize,
+    required this.onNavTap,
     this.center = false,
   });
 
@@ -145,9 +155,13 @@ class HeroContent extends StatelessWidget {
           spacing: 15,
           runSpacing: 15,
           children: [
-            HeroButton(text: "Resume", filled: true, onTap: () {}),
-            HeroButton(text: "Projects", onTap: () {}),
-            HeroButton(text: "Contact", onTap: () {}),
+            HeroButton(
+              text: "Resume",
+              //filled: true,
+              onTap: () => onNavTap("Contact"),
+            ),
+            HeroButton(text: "Projects", onTap: () => onNavTap("Projects")),
+            HeroButton(text: "Contact", onTap: () => onNavTap("Contact")),
           ],
         ),
         const SizedBox(height: 35),
@@ -156,18 +170,31 @@ class HeroContent extends StatelessWidget {
           style: TextStyle(color: theme.textTheme.bodyMedium?.color),
         ),
         const SizedBox(height: 15),
-        // FIX: removed `const` from this list. Mixing `const` with
-        // Icons.xxx passed into a custom widget constructor can trip
-        // constant-evaluation in some SDKs and is unnecessary here.
         Wrap(
           alignment: center ? WrapAlignment.center : WrapAlignment.start,
           spacing: 15,
           runSpacing: 15,
           children: [
-            SocialIcon(Icons.code),
-            SocialIcon(Icons.work),
-            SocialIcon(Icons.email),
-            SocialIcon(Icons.language),
+            SocialIcon(
+              icon: Icons.code,
+              tooltip: "GitHub",
+              onTap: () => openUrl(PortfolioLinks.github),
+            ),
+            SocialIcon(
+              icon: Icons.work,
+              tooltip: "LinkedIn",
+              onTap: () => openUrl(PortfolioLinks.linkedin),
+            ),
+            SocialIcon(
+              icon: Icons.terminal_rounded,
+              tooltip: "LeetCode",
+              onTap: () => openUrl(PortfolioLinks.leetcode),
+            ),
+            SocialIcon(
+              icon: Icons.email,
+              tooltip: "Email",
+             onTap: () => sendEmail(to: PortfolioLinks.email),
+            ),
           ],
         ),
       ],
@@ -232,8 +259,15 @@ class _HeroButtonState extends State<HeroButton> {
 
 class SocialIcon extends StatefulWidget {
   final IconData icon;
+  final String tooltip;
+  final VoidCallback onTap;
 
-  const SocialIcon(this.icon, {super.key});
+  const SocialIcon({
+    super.key,
+    required this.icon,
+    required this.tooltip,
+    required this.onTap,
+  });
 
   @override
   State<SocialIcon> createState() => _SocialIconState();
@@ -246,24 +280,30 @@ class _SocialIconState extends State<SocialIcon> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return MouseRegion(
-      onEnter: (_) => setState(() => hover = true),
-      onExit: (_) => setState(() => hover = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: 45,
-        height: 45,
-        decoration: BoxDecoration(
-          color: hover
-              ? theme.colorScheme.primary.withOpacity(0.15)
-              : theme.cardColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Icon(
-          widget.icon,
-          color: hover
-              ? theme.colorScheme.primary
-              : theme.textTheme.bodyMedium?.color,
+    return Tooltip(
+      message: widget.tooltip,
+      child: MouseRegion(
+        onEnter: (_) => setState(() => hover = true),
+        onExit: (_) => setState(() => hover = false),
+        child: GestureDetector(
+          onTap: widget.onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            width: 45,
+            height: 45,
+            decoration: BoxDecoration(
+              color: hover
+                  ? theme.colorScheme.primary.withOpacity(0.15)
+                  : theme.cardColor,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              widget.icon,
+              color: hover
+                  ? theme.colorScheme.primary
+                  : theme.textTheme.bodyMedium?.color,
+            ),
+          ),
         ),
       ),
     );
@@ -292,23 +332,14 @@ class ProfileAvatar extends StatelessWidget {
           ),
         ],
       ),
-
       child: ClipOval(
-        child: Builder(
-          builder: (context) {
-            try {
-              return Image.asset(
-                "assets/img1.png",
-                fit: BoxFit.cover,
-                width: size,
-                height: size,
-                errorBuilder: (context, error, stackTrace) {
-                  return _fallbackAvatar(theme, size);
-                },
-              );
-            } catch (_) {
-              return _fallbackAvatar(theme, size);
-            }
+        child: Image.asset(
+          "assets/manasi2.png",
+          fit: BoxFit.cover,
+          width: size,
+          height: size,
+          errorBuilder: (context, error, stackTrace) {
+            return _fallbackAvatar(theme, size);
           },
         ),
       ),

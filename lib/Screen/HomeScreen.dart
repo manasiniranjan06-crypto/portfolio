@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:portfolio/Screen/aboutScreen.dart';
 import 'package:portfolio/Screen/contactScreen.dart';
@@ -8,14 +7,10 @@ import 'package:portfolio/Screen/projectSection.dart';
 import 'package:portfolio/Screen/skilllSection.dart';
 import 'package:portfolio/section/navBar.dart';
 
-
 class HomeScreen extends StatefulWidget {
   final VoidCallback onThemeToggle;
 
-  const HomeScreen({
-    super.key,
-    required this.onThemeToggle,
-  });
+  const HomeScreen({super.key, required this.onThemeToggle});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -46,23 +41,18 @@ class _HomeScreenState extends State<HomeScreen> {
       case "Home":
         key = homeKey;
         break;
-
       case "About":
         key = aboutKey;
         break;
-
       case "Skills":
         key = skillsKey;
         break;
-
       case "Projects":
         key = projectsKey;
         break;
-
       case "Education":
         key = educationKey;
         break;
-
       case "Contact":
         key = contactKey;
         break;
@@ -77,56 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // Reusable Two-Column Row
-  Widget buildRow({
-    required GlobalKey leftKey,
-    required Widget leftWidget,
-    required Widget rightWidget,
-  }) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: Container(
-              key: leftKey,
-              child: leftWidget,
-            ),
-          ),
-
-          VerticalDivider(
-            width: 1,
-            color: Theme.of(context).dividerColor,
-          ),
-
-          Expanded(
-            child: rightWidget,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Clean stand-in for sections not built yet. This is NOT Placeholder() --
-  // Placeholder() draws the diagonal-cross box you saw on screen. This is
-  // just plain text on the theme's background so the page still looks like
-  // a page while you build the real section files one by one.
-  Widget _comingSoon(String label) {
-    final theme = Theme.of(context);
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(40),
-      color: theme.scaffoldBackgroundColor,
-      child: Text(
-        "$label section coming soon",
-        style: TextStyle(
-          color: theme.textTheme.bodyMedium?.color,
-          fontSize: 16,
-        ),
-      ),
-    );
-  }
-
   @override
   void dispose() {
     scrollController.dispose();
@@ -137,7 +77,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-
       body: Column(
         children: [
           // Navbar
@@ -153,45 +92,47 @@ class _HomeScreenState extends State<HomeScreen> {
               controller: scrollController,
               child: Column(
                 children: [
-
-                  // Hero Section (Full Width) -- wired to your real file
+                  // Hero Section (Full Width)
                   Container(
                     key: homeKey,
                     width: double.infinity,
-                    child: const HeroSection(),
+                    child: HeroSection(onNavTap: scrollToSection),
                   ),
 
-                 // abbout page
+                  // About
                   Container(
                     key: aboutKey,
                     width: double.infinity,
-                    child: AboutSection(),
+                    child: const AboutSection(),
                   ),
-                  //skills
+
+                  // Skills
                   Container(
                     key: skillsKey,
                     width: double.infinity,
-                    child: SkillsSection(),
+                    child: const SkillsSection(),
                   ),
-                Container(
+
+                  // Projects
+                  Container(
                     key: projectsKey,
                     width: double.infinity,
                     child: const ProjectsSection(),
                   ),
 
-                 // abbout page
+                  // Education
                   Container(
                     key: educationKey,
                     width: double.infinity,
-                    child: EducationSection(),
+                    child: const EducationSection(),
                   ),
-                  //skills
+
+                  // Contact
                   Container(
                     key: contactKey,
                     width: double.infinity,
-                    child: ContactSection(),
+                    child: const ContactSection(),
                   ),
-                  
                 ],
               ),
             ),

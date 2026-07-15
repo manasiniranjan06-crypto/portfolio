@@ -1,42 +1,39 @@
 import 'package:flutter/material.dart';
-import 'Screen/HomeScreen.dart';
-import 'theme/app_theme.dart';
+import 'package:portfolio/Screen/homeScreen.dart';
+import 'package:portfolio/theme/app_theme.dart';
 
 void main() {
-  runApp(const Portfolio());
+  runApp(const PortfolioApp());
 }
 
-class Portfolio extends StatefulWidget {
-  const Portfolio({super.key});
+class PortfolioApp extends StatefulWidget {
+  const PortfolioApp({super.key});
 
   @override
-  State<Portfolio> createState() => _PortfolioState();
+  State<PortfolioApp> createState() => _PortfolioAppState();
 }
 
-class _PortfolioState extends State<Portfolio> {
-  ThemeMode _themeMode = ThemeMode.dark;
+class _PortfolioAppState extends State<PortfolioApp> {
+  // Starts in dark mode -- flip to ThemeMode.light if you'd rather open
+  // in light mode by default.
+  ThemeMode themeMode = ThemeMode.dark;
 
   void toggleTheme() {
     setState(() {
-      _themeMode = _themeMode == ThemeMode.dark
-          ? ThemeMode.light
-          : ThemeMode.dark;
+      themeMode =
+          themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Manasi Niranjan | Portfolio',
       debugShowCheckedModeBanner: false,
-      title: "Portfolio",
-
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: _themeMode,
-
-      home: HomeScreen(
-        onThemeToggle: toggleTheme,
-      )
+      themeMode: themeMode,
+      home: HomeScreen(onThemeToggle: toggleTheme),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/model/launcher.dart';
 import 'package:portfolio/model/projectData_model.dart.dart';
 import 'package:portfolio/theme/app_theme.dart';
 
@@ -11,7 +12,13 @@ class ProjectsSection extends StatefulWidget {
 
 class _ProjectsSectionState extends State<ProjectsSection> {
   int currentPage = 0;
-  final PageController _pageController = PageController(viewportFraction: 0.34);
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(viewportFraction: 0.34);
+  }
 
   @override
   void dispose() {
@@ -27,16 +34,26 @@ class _ProjectsSectionState extends State<ProjectsSection> {
     final isMobile = width < 700;
     final isTablet = width >= 700 && width < 1100;
 
-    final visibleCount = isMobile ? 1 : (isTablet ? 2 : 3);
     final viewportFraction = isMobile ? 0.92 : (isTablet ? 0.48 : 0.34);
+
+    if (_pageController.viewportFraction != viewportFraction) {
+      _pageController.dispose();
+      _pageController = PageController(viewportFraction: viewportFraction);
+    }
+
+    final sectionPadding = isMobile ? 20.0 : 60.0;
+    final arrowsReservedWidth = isMobile ? 0.0 : 100.0;
+    final containerWidth = width - (sectionPadding * 2) - arrowsReservedWidth;
+    final cardWidth = containerWidth * viewportFraction;
+    final carouselWidth = (cardWidth * projects.length).clamp(
+      cardWidth,
+      containerWidth,
+    );
 
     return Container(
       width: double.infinity,
       color: colors.cardBg.withOpacity(0.3),
-      padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 20 : 60,
-        vertical: 60,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: sectionPadding, vertical: 60),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -68,7 +85,9 @@ class _ProjectsSectionState extends State<ProjectsSection> {
           const SizedBox(height: 40),
           SizedBox(
             height: 420,
+            width: double.infinity,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (!isMobile)
                   _ArrowButton(
@@ -80,9 +99,10 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                       );
                     },
                   ),
-                Expanded(
+                SizedBox(
+                  width: carouselWidth,
                   child: PageView.builder(
-                    controller: PageController(viewportFraction: viewportFraction),
+                    controller: _pageController,
                     itemCount: projects.length,
                     onPageChanged: (i) => setState(() => currentPage = i),
                     itemBuilder: (context, i) {
@@ -117,7 +137,9 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                 width: active ? 20 : 8,
                 height: 8,
                 decoration: BoxDecoration(
-                  color: active ? theme.colorScheme.primary : theme.dividerColor,
+                  color: active
+                      ? theme.colorScheme.primary
+                      : theme.dividerColor,
                   borderRadius: BorderRadius.circular(4),
                 ),
               );
@@ -201,23 +223,39 @@ class _ProjectCardState extends State<_ProjectCard> {
                     color: theme.colorScheme.primary.withOpacity(0.18),
                     blurRadius: 24,
                     spreadRadius: 2,
-                  )
+                  ),
                 ]
               : [],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 140,
-              decoration: BoxDecoration(
-                color: theme.scaffoldBackgroundColor,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                ),
+            // project image
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
               ),
-              child: Icon(Icons.window_rounded, size: 44, color: theme.dividerColor),
+              child: Container(
+                height: 130,
+                width: double.infinity,
+                color: theme.scaffoldBackgroundColor,
+                child: widget.project.imagePath != null
+                    ? Image.asset(
+                        widget.project.imagePath!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Icon(
+                          Icons.window_rounded,
+                          size: 44,
+                          color: theme.dividerColor,
+                        ),
+                      )
+                    : Icon(
+                        Icons.window_rounded,
+                        size: 44,
+                        color: theme.dividerColor,
+                      ),
+              ),
             ),
             Expanded(
               child: Padding(
@@ -260,7 +298,15 @@ class _ProjectCardState extends State<_ProjectCard> {
                           .toList(),
                     ),
                     const SizedBox(height: 12),
-                    _ViewProjectButton(),
+                    _ViewProjectButton(
+                      onTap: () {
+                        final url =
+                            widget.project.liveUrl ?? widget.project.githubUrl;
+                        if (url != null) {
+                          openUrl(url);
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -289,13 +335,19 @@ class _Tag extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(color: theme.textTheme.bodyMedium?.color, fontSize: 10.5),
+        style: TextStyle(
+          color: theme.textTheme.bodyMedium?.color,
+          fontSize: 10.5,
+        ),
       ),
     );
   }
 }
 
 class _ViewProjectButton extends StatefulWidget {
+  final VoidCallback onTap;
+  const _ViewProjectButton({required this.onTap});
+
   @override
   State<_ViewProjectButton> createState() => _ViewProjectButtonState();
 }
@@ -310,7 +362,7 @@ class _ViewProjectButtonState extends State<_ViewProjectButton> {
       onEnter: (_) => setState(() => hover = true),
       onExit: (_) => setState(() => hover = false),
       child: GestureDetector(
-        onTap: () {},
+        onTap: widget.onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),

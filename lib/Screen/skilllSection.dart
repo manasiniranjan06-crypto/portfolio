@@ -86,7 +86,11 @@ class SkillsSection extends StatelessWidget {
 class FadeSlideIn extends StatefulWidget {
   final Widget child;
   final Duration delay;
-  const FadeSlideIn({super.key, required this.child, this.delay = Duration.zero});
+  const FadeSlideIn({
+    super.key,
+    required this.child,
+    this.delay = Duration.zero,
+  });
 
   @override
   State<FadeSlideIn> createState() => _FadeSlideInState();
@@ -157,6 +161,8 @@ const List<SkillCategory> skillCategories = [
     Skill("Maven", Icons.inventory, Color(0xffC71A36)),
     Skill("VS Code", Icons.code_off, Color(0xff007ACC)),
     Skill("IntelliJ", Icons.developer_mode, Color(0xffFF4081)),
+    Skill("Postman", Icons.send, Color(0xffFF6C37)),
+    Skill("Figma", Icons.design_services, Color(0xffF24E1E)),
   ]),
   SkillCategory("Concepts", [
     Skill("OOP", Icons.layers, Color(0xff9C27B0)),
@@ -216,7 +222,7 @@ class _SkillCardState extends State<SkillCard> {
                     color: theme.colorScheme.primary.withOpacity(.25),
                     blurRadius: 20,
                     spreadRadius: 2,
-                  )
+                  ),
                 ]
               : [],
         ),
@@ -236,8 +242,9 @@ class _SkillCardState extends State<SkillCard> {
             Wrap(
               spacing: 18,
               runSpacing: 18,
-              children:
-                  widget.skills.map((e) => SkillWidget(skill: e)).toList(),
+              children: widget.skills
+                  .map((e) => SkillWidget(skill: e))
+                  .toList(),
             ),
           ],
         ),
@@ -287,7 +294,11 @@ class _SkillWidgetState extends State<SkillWidget> {
                       width: 2,
                     ),
                   ),
-                  child: Icon(widget.skill.icon, color: widget.skill.color, size: 28),
+                  child: Icon(
+                    widget.skill.icon,
+                    color: widget.skill.color,
+                    size: 28,
+                  ),
                 ),
                 const SizedBox(height: 10),
                 Text(
