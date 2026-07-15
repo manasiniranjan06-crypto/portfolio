@@ -14,8 +14,7 @@ class PortfolioApp extends StatefulWidget {
 }
 
 class _PortfolioAppState extends State<PortfolioApp> {
-  // Starts in dark mode -- flip to ThemeMode.light if you'd rather open
-  // in light mode by default.
+
   ThemeMode themeMode = ThemeMode.dark;
 
   void toggleTheme() {

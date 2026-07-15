@@ -52,7 +52,7 @@ const List<ProjectDataModel> projects = [
         'Designed and developed a fully responsive personal portfolio website showcasing projects, skills, resume, and contact information with modern UI and smooth animations.',
     tags: ['Flutter Web'],
     imagePath: 'assets/portfolio.png',
-    githubUrl: 'https://github.com/ManasiNiranjan/portfolio',
+    githubUrl: 'https://github.com/manasiniranjan06-crypto/portfolio',
   ),
 ];
 
