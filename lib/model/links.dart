@@ -8,7 +8,7 @@ class PortfolioLinks {
 
 
   static const String flutterResumeUrl =
-      "https://drive.google.com/file/d/16XdYBoCRX7DISk0pRGKO4tvB2YQG3pvN/view?usp=drive_link";
+      "https://drive.google.com/file/d/1ySMXQSqUK_rLNRkGa4PyWq2fiW02hZL8/view?usp=sharing";
   static const String javaResumeUrl =
-      "https://drive.google.com/file/d/1oZMb8dw-iRegk_4aLOj2o7Xf-d1qvnyg/view?usp=drive_link";
+      "https://drive.google.com/file/d/1eKtU8sULO-jaZPDdhH_PsnVBE-TiawBf/view?usp=sharing";
 }
