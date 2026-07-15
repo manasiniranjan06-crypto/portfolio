@@ -334,7 +334,7 @@ class ProfileAvatar extends StatelessWidget {
       ),
       child: ClipOval(
         child: Image.asset(
-          "assets/manasi2.png",
+          "assets/mani.png",
           fit: BoxFit.cover,
           width: size,
           height: size,
