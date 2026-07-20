@@ -155,6 +155,8 @@ class AboutSection extends StatelessWidget {
             ),
           ),
 
+         
+
           Positioned(
             bottom: 20,
             left: 10,
